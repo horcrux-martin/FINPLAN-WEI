@@ -1366,6 +1366,8 @@ let assetPieChart = null;
 let cashBarChart = null;
 
 function renderVisuals() {
+  if (!isActiveSection("visuals")) return; // <--- anti chart blank pas hidden
+
   const pie = $("assetPie");
   const bar = $("cashBar");
   if (!pie || !bar || typeof Chart === "undefined") return;
@@ -1497,6 +1499,22 @@ function renderPlan() {
 
 /* ===== BUTTONS ===== */
 function wireButtons() {
+
+  // NAV buttons (BIAR NAV LU JALAN)
+  nav?.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-target]");
+    if (!btn) return;
+    setActiveSection(btn.dataset.target);
+  });
+
+  // Shortcut Ctrl+K (sesuai teks UI lu)
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      setActiveSection("checkup");
+    }
+  });
+
   $("btnStartWizard")?.addEventListener("click", () => setActiveSection("checkup"));
   $("btnRefreshAll")?.addEventListener("click", () => {
     renderLanding();
