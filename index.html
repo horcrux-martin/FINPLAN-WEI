@@ -1,0 +1,376 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Financial Planner Komprehensif (Indonesia) — End-to-End</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Financial Planner Komprehensif</h1>
+          <div class="sub">Checkup → Rekomendasi → Goals (S2) → Grafik → Roadmap</div>
+        </div>
+      </div>
+      <div class="nav" id="nav">
+        <button data-target="landing" class="active">🏠 Landing</button>
+        <button data-target="checkup">🧭 Checkup Wizard</button>
+        <button data-target="results">📌 Hasil & Rasio</button>
+        <button data-target="ai">🤖 Rekomendasi</button>
+        <button data-target="goals">🎓 Goals S2</button>
+        <button data-target="visuals">📊 Grafik</button>
+        <button data-target="plan">🛣 Roadmap</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+
+    <!-- LANDING -->
+    <section class="section active" id="section-landing">
+      <div class="hero">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Ini bukan landing page. Ini sistem financial planning yang jalan.</h2>
+              <p>
+                Kamu isi data aset–utang–pendapatan–pengeluaran, lalu sistem hitung rasio otomatis, kasih interpretasi yang manusiawi,
+                bikin rekomendasi investasi & strategi utang, cek kemampuan goals S2 luar negeri, tampilkan grafik, dan keluarkan roadmap 3–6–12 bulan.
+              </p>
+            </div>
+            <div class="row">
+              <span class="pill info"><strong>Mode:</strong> Indonesia (middle-income)</span>
+              <span class="pill"><strong>Data:</strong> tersimpan lokal</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="card">
+              <div class="row" style="justify-content:space-between">
+                <div>
+                  <div class="muted">
+                    Kamu bisa mulai dengan data contoh (sudah terisi), atau edit sesuai kondisi kamu.
+                    <div style="margin-top:6px">
+                      Tips cepat: kalau angka kamu belum rapi, isi estimasi dulu. Yang penting konsisten.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="btn primary" id="btnStartWizard">Mulai Checkup →</button>
+                  <button class="btn" id="btnRecalcLanding">Refresh Hasil</button>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="kpi" id="kpiLanding"></div>
+              <div class="footnote">
+                Shortcut: tekan <span class="kbd">Ctrl</span> + <span class="kbd">K</span> untuk lompat ke checkup wizard.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Checklist yang kita cek</h2>
+              <p>Supaya actionable, bukan sekadar angka: status warna, dampak, dan langkah konkret.</p>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="card">
+              <div class="muted">
+                <div style="margin-bottom:10px"><strong style="color:rgba(233,238,251,.96)">Yang dihitung otomatis:</strong></div>
+                <ul style="margin:0; padding-left:18px; line-height:1.6; font-size:12px">
+                  <li>Rasio Likuiditas (operasional) + status</li>
+                  <li>Rasio Menabung + status</li>
+                  <li>Rasio Utang (cicilan) + status</li>
+                  <li>Net Worth (Aset - Utang)</li>
+                  <li>Cashflow bulanan</li>
+                  <li>Rekomendasi investasi & strategi utang</li>
+                  <li>Goals Planner S2 (timeline & feasibility)</li>
+                  <li>Grafik alokasi aset & arus kas</li>
+                  <li>Roadmap 3 / 6 / 12 bulan yang adaptif</li>
+                </ul>
+              </div>
+              <div class="divider"></div>
+              <div class="row">
+                <button class="btn primary" id="btnLandingToResults">Lihat Dashboard Hasil →</button>
+                <button class="btn" id="btnResetAll">Reset ke Data Contoh</button>
+              </div>
+              <div class="footnote">
+                Catatan: Semua angka dalam Rupiah dan bersifat edukatif. Untuk keputusan besar (mis. KPR baru), pertimbangkan konsultasi profesional.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHECKUP -->
+    <section class="section" id="section-checkup">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Financial Checkup Wizard</h2>
+            <p>Isi bertahap. Sistem akan simpan otomatis dan kamu bisa bolak-balik tanpa kehilangan data.</p>
+          </div>
+          <div class="row">
+            <span class="pill" id="wizardProgressPill"><strong>Progress:</strong> 0/4</span>
+            <button class="btn" id="btnWizardRecalc">Hitung & Update Semua</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="wizard">
+            <div class="steps" id="wizardSteps"></div>
+            <div class="card">
+              <div id="wizardStepTitle" class="h3"></div>
+              <div class="muted" id="wizardStepDesc"></div>
+              <div class="space"></div>
+              <div id="wizardForm"></div>
+              <div class="divider"></div>
+              <div class="row" style="justify-content:space-between">
+                <div class="row">
+                  <button class="btn" id="btnPrev">← Sebelumnya</button>
+                  <button class="btn primary" id="btnNext">Berikutnya →</button>
+                </div>
+                <div class="row">
+                  <button class="btn" id="btnGoResults">Ke Dashboard Hasil</button>
+                </div>
+              </div>
+              <div class="footnote">
+                Kamu boleh isi angka 0 kalau belum tahu. Yang penting totalnya mendekati kondisi nyata.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Ringkasan Cepat (Auto)</h2>
+              <p>Ini snapshot dari data yang kamu isi sekarang.</p>
+            </div>
+            <div class="row">
+              <span class="pill" id="pillLastSaved"><strong>Terakhir simpan:</strong> —</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="metric-grid" id="quickMetrics"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Catatan yang sering kejadian</h2>
+              <p>Biar kamu nggak kejebak “merasa aman” padahal rapuh.</p>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="card">
+              <ul style="margin:0; padding-left:18px; line-height:1.6; font-size:12px; color:rgba(233,238,251,.92)">
+                <li><strong>Dana darurat</strong> sering ketukar sama “tabungan tujuan”. Itu beda fungsi.</li>
+                <li><strong>Rasio utang</strong> aman belum tentu cashflow aman, apalagi kalau pengeluaran bocor.</li>
+                <li><strong>Saving ratio</strong> tinggi tapi likuiditas rendah = rawan “nabung maksa” lalu kartu kredit dipakai.</li>
+                <li><strong>Investasi</strong> harus sesuai tujuan & horizon waktu. Jangan asal “lagi rame”.</li>
+              </ul>
+              <div class="divider"></div>
+              <div class="row">
+                <button class="btn primary" id="btnToAIFromCheckup">Lanjut ke Rekomendasi →</button>
+                <button class="btn" id="btnToGoalsFromCheckup">Cek Goals S2 →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="section" id="section-results">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Financial Health Result Dashboard</h2>
+            <p>Angka + interpretasi + status warna. Fokus: apa dampaknya ke kondisi kamu, dan apa yang perlu dibenahi duluan.</p>
+          </div>
+          <div class="row">
+            <button class="btn" id="btnResultsRecalc">Refresh</button>
+            <button class="btn primary" id="btnResultsToAI">Ke Rekomendasi →</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="metric-grid" id="resultsMetrics"></div>
+          <div class="space-lg"></div>
+          <div class="split">
+            <div class="card">
+              <div class="h3">Detail Angka (Ringkas)</div>
+              <div id="resultsDetailTable"></div>
+            </div>
+            <div class="card">
+              <div class="h3">Interpretasi Utama</div>
+              <div id="resultsNarrative" class="muted"></div>
+              <div class="divider"></div>
+              <div class="row">
+                <button class="btn primary" id="btnToVisuals">Lihat Grafik →</button>
+                <button class="btn" id="btnToPlan">Buka Roadmap →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI -->
+    <section class="section" id="section-ai">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>AI Recommendation (Otomatis & Logis)</h2>
+            <p>Ini bukan “kata-kata motivasi”. Ini daftar prioritas yang masuk akal berdasarkan rasio dan cashflow kamu.</p>
+          </div>
+          <div class="row">
+            <button class="btn" id="btnAIRecalc">Refresh</button>
+            <button class="btn primary" id="btnAIToGoals">Lanjut Goals S2 →</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="cards" id="aiCards"></div>
+          <div class="space-lg"></div>
+          <div class="card">
+            <div class="h3">Ringkas “Kalau cuma bisa 3 hal dulu”</div>
+            <div id="aiTop3" class="muted"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GOALS -->
+    <section class="section" id="section-goals">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Goals Planner — S2 Luar Negeri</h2>
+            <p>Jawab pertanyaan: <strong>“Gue sanggup S2 apa nggak?”</strong> dengan gap analysis, target saving, dan timeline.</p>
+          </div>
+          <div class="row">
+            <button class="btn" id="btnGoalsRecalc">Hitung Goals</button>
+            <button class="btn primary" id="btnGoalsToVisuals">Lihat Grafik →</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="split">
+            <div class="card">
+              <div class="h3">Input Goals S2</div>
+              <div class="form" id="goalsForm"></div>
+              <div class="divider"></div>
+              <div class="row">
+                <button class="btn primary" id="btnGoalsCalc">Cek Feasibility</button>
+                <button class="btn" id="btnGoalsReset">Reset Input Goals</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="h3">Hasil & Strategi</div>
+              <div id="goalsResult"></div>
+              <div class="divider"></div>
+              <div class="row">
+                <button class="btn" id="btnGoalsToAI">Balik ke Rekomendasi</button>
+                <button class="btn primary" id="btnGoalsToPlan">Generate Roadmap →</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-lg"></div>
+          <div class="split">
+            <div class="chart-wrap">
+              <div class="chart-title">Proyeksi Akumulasi Dana Goals (S2)</div>
+              <canvas id="s2Line"></canvas>
+            </div>
+            <div class="card">
+              <div class="h3">Catatan Realistis</div>
+              <div class="muted" id="goalsRealisticNotes"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- VISUALS -->
+    <section class="section" id="section-visuals">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Visual Dashboard (Real Data)</h2>
+            <p>Pie chart: alokasi aset. Bar chart: pendapatan vs pengeluaran vs surplus. Semua dari data kamu.</p>
+          </div>
+          <div class="row">
+            <button class="btn" id="btnVisualsRecalc">Refresh Grafik</button>
+            <button class="btn primary" id="btnVisualsToPlan">Ke Roadmap →</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="split">
+            <div class="chart-wrap">
+              <div class="chart-title">Alokasi Aset (Kas/Likuid vs Investasi vs Non-Likuid)</div>
+              <canvas id="assetPie"></canvas>
+            </div>
+            <div class="chart-wrap">
+              <div class="chart-title">Arus Kas Bulanan (Income vs Expenses vs Surplus)</div>
+              <canvas id="cashBar"></canvas>
+            </div>
+          </div>
+          <div class="space-lg"></div>
+          <div class="card">
+            <div class="h3">Interpretasi Visual</div>
+            <div id="visualNarrative" class="muted"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAN -->
+    <section class="section" id="section-plan">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Action Plan & Roadmap (3 / 6 / 12 Bulan)</h2>
+            <p>Roadmap akan menyesuaikan kondisi: likuiditas, debt ratio, saving ratio, dan cashflow.</p>
+          </div>
+          <div class="row">
+            <button class="btn" id="btnPlanRecalc">Regenerate</button>
+            <button class="btn primary" id="btnPlanToLanding">Selesai → Kembali Landing</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="split">
+            <div class="card">
+              <div class="h3">Prioritas Utama (Sekarang)</div>
+              <div id="planPriority" class="muted"></div>
+              <div class="divider"></div>
+              <div class="h3">Checklist Cepat</div>
+              <div id="planChecklist"></div>
+            </div>
+            <div class="card">
+              <div class="h3">Roadmap</div>
+              <div id="roadmapBlocks"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
