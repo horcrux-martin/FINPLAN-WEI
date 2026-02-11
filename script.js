@@ -34,7 +34,7 @@ function getDefaultSteps() {
           },
           nonLiquid: {
             konsumsi: {
-              motor: 4000000
+              mobil atau motor: 4000000
             },
             investasi: {
               bpjs: 4000000
@@ -471,7 +471,7 @@ function renderWizard(){
       <div class="divider"></div>
       <div class="card-title">Aset Non-Likuid</div>
       <div class="form">
-        ${numberField("Motor (konsumsi)","assets.nonLiquid.konsumsi.motor",d.assets.nonLiquid.konsumsi.motor,"Aset sulit dicairkan cepat.")}
+        ${numberField("Kendaraan (Motor/mobil/konsumsi)","assets.nonLiquid.konsumsi.motor",d.assets.nonLiquid.konsumsi.motor,"Aset sulit dicairkan cepat.")}
         ${numberField("BPJS (investasi)","assets.nonLiquid.investasi.bpjs",d.assets.nonLiquid.investasi.bpjs,"Saldo/manfaat jangka panjang.")}
       </div>
     `;
