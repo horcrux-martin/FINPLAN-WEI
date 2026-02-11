@@ -202,6 +202,10 @@ function saveGoalsMulti() {
 function $(id) {
   return document.getElementById(id);
 }
+function isActiveSection(key){
+  return sections[key] && sections[key].classList.contains("active");
+}
+
 
 const sections = {
   landing: $("section-landing"),
@@ -255,42 +259,34 @@ function setByPath(obj, path, value) {
 
 /* ===== NAV ===== */
 const nav = $("nav");
-function setActiveSection(key) {
-  Object.entries(sections).forEach(([k, el]) => {
-    if (!el) return;
-    el.classList.toggle("active", k === key);
+function setActiveSection(key){
+  // 1) toggle section
+  Object.entries(sections).forEach(([k, el])=>{
+    if(!el) return;
+    el.classList.toggle("active", k===key);
   });
-  if (nav) {
-    Array.from(nav.querySelectorAll("button[data-target]")).forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.target === key);
+
+  // 2) toggle nav active
+  if(nav){
+    Array.from(nav.querySelectorAll("button[data-target]")).forEach(btn=>{
+      btn.classList.toggle("active", btn.dataset.target===key);
     });
   }
-  window.scrollTo({ top: 0, behavior: "smooth" });
 
-  if (key === "landing") renderLanding();
-  if (key === "checkup") renderWizard();
-  if (key === "results") renderResults();
-  if (key === "ai") renderAI();
-  if (key === "goals") renderGoalsS2();
-  if (key === "goals2") renderGoalsMulti();
-  if (key === "visuals") renderVisuals();
-  if (key === "plan") renderPlan();
-}
+  window.scrollTo({top:0, behavior:"smooth"});
 
-if (nav) {
-  nav.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-target]");
-    if (!btn) return;
-    setActiveSection(btn.dataset.target);
+  // 3) render AFTER shown (biar ukuran canvas kebaca)
+  requestAnimationFrame(()=>{
+    if(key==="landing") renderLanding();
+    if(key==="checkup") renderWizard();
+    if(key==="results") renderResults();
+    if(key==="ai") renderAI();
+    if(key==="goals") renderGoalsS2();
+    if(key==="goals2") renderGoalsMulti();
+    if(key==="visuals") renderVisuals();
+    if(key==="plan") renderPlan();
   });
 }
-
-document.addEventListener("keydown", (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-    e.preventDefault();
-    setActiveSection("checkup");
-  }
-});
 
 /* ===== DERIVED (Liquidity ~ 3.6 untuk display) ===== */
 function calculateDerived(fin, data) {
@@ -1638,15 +1634,9 @@ function wireButtons() {
 }
 
 /* ===== INIT ===== */
-function init() {
+function init(){
   wireButtons();
-  renderLanding();
-  renderWizard();
-  renderResults();
-  renderAI();
-  renderGoalsS2();
-  renderGoalsMulti();
-  renderVisuals();
-  renderPlan();
+  setActiveSection("landing"); // render cuma landing dulu
 }
 init();
+
